@@ -61,9 +61,9 @@ parse_git_branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
 if [ "$color_prompt" = yes ]; then
-    PS1='[${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\[\033[00m\]:\[\033[01;34m\] \W \[\033[01;31m\]$(parse_git_branch)\[\033[00m\]]\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\w \[\033[00m\]> \[\033[01;31m\]$(parse_git_branch)\[\033[00m\] '
 else
-    PS1='[${debian_chroot:+($debian_chroot)}\u@: \W $(parse_git_branch)]\$ '
+   PS1='${debian_chroot:+($debian_chroot)}\w > $(parse_git_branch) '
 fi
 # old
 #if [ "$color_prompt" = yes ]; then
@@ -127,23 +127,11 @@ if ! shopt -oq posix; then
 fi
 
 ### CUSTOM DEFINITIONS ###
-# makes nvim default editor
+# makes default editor
 export EDITOR="vim"
-# some apps might use this as alternative text editor
+# some apps might use as alternative text editor
 export VISUAL="$EDITOR"
-
 # changing fuzzy finders defaults
 export FZF_DEFAULT_OPTS='--bind=tab:up,shift-tab:down'
 
 ### CUSTOM PATHS ###
-# start IntelliJ IDEA from any directory
-# export PATH="/$HOME/IntelliJ IDEA/bin:$PATH"
-
-# go path
-# export PATH="$PATH:/usr/local/go/bin"
-
-# enable go lsp
-# export PATH="$HOME/.local/bin/go/bin:$PATH"
-
-# enable Lua-Language-Server
-# export PATH="$HOME/.local/bin/lua-lsp/bin:$PATH"

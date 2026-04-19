@@ -1,3 +1,5 @@
+### alias ###
+
 alias clean="sudo apt autoremove"
 alias install="sudo apt install"
 alias remove="sudo apt purge"
@@ -9,42 +11,29 @@ alias vi="gvim -v"
 # alias vi="vim"
 # alias nv="nvim"
 
-##### fzf aliases/functions  #####
-alias fd="cd ~ && cd \$(find * . -type d | fzf)"
-# alias ff='cd "$(dirname "$(find ~ -type f | fzf)")"'
+### functions  ###
+fd() {
+  local dir
+  # etsitään kansiot
+  # poistetaan piilokansiot (-prune)
+  # sed poistaa "./" jokaiselta riviltä
+  dir=$(find . -path '*/.*' -prune -o -type d -not -path '.' -print 2>/dev/null | sed 's|^\./||' | fzf) || return
+  # jos valinta tyhjä, ei tehdä mitään
+   [ -n "$dir" ] && cd "$dir"
+}
 
-# fd() {
-#      local selected_folder
-# selected_folder=$(find * . -type d | fzf) && code -r "$selected_folder"
-# }
+ff() {
+  local file
+  file=$(find . -path '*/.*' -prune -o -type f -print 2>/dev/null | sed 's|^\./||' | fzf) || return
+  [ -n "$file" ] && vi "$file"
+}
 
- ff() {
-    local selected_file
-    selected_file=$(find ~ -type f | fzf) && vi "$selected_file"
- }
+pysetup() {
+    # create a virtual environment
+    python3 -m venv .venv
+    # activate virtual environment
+    source .venv/bin/activate
+    # install completed
+    echo "completed"
+}
 
-##### npm related aliases #####
-# alias live="live-server . --browser=firefox"
-
-# # set up a python environment
-# pysetup() {
-#     # create a virtual environment
-#     python3 -m venv .venv
-#     # activate virtual environment
-#     source .venv/bin/activate
-#     # install required packages (Neovim)
-#     pip install "python-lsp-server[all]" python-lsp-black
-#     # install completed
-#     echo "python development environment set up with '.venv' virtual environment."
-# }
-#
-# # install code formatter prettier (Neovim)
-# tssetup() {
-#      npm i prettier
-#  }
-
-# # install code styling StyLua (Neovim)
-# luasetup() {
-# # has to be binary to work
-# npm i @johnnymorganz/stylua-bin
-# }
